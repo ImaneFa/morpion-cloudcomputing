@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <title>Morpion : 2 joueurs</title>
+    <style>
+      table {
+        margin-left:auto;
+        margin-right:auto
+      }
+    </style>
+  </head>
+  <body>
+    <h1> Morpion - 2 joueurs </h1>
+    <div class="container">
+       <p class="annonceur"> Joueur actuel {{joueur}} </p>
+    </div>
+    {% if gagnant != "Aucun" %}
+    <div class="container">
+       <p class="annonceur"> VICTOIRE DE {{gagnant}}</p>
+    </div>
+    {% endif %}
+    <table>
+      {% for ligne in range(3) %}
+      <tr>
+        {% for colonne in range(3) %}
+        <td>
+          {% if jeu[ligne][colonne] %} {{ jeu[ligne][colonne] }} {% elif gagnant != 'Aucun' %} {% else
+          %}
+          <a class="gameButton" href="{{ url_for('jouerdeuxjoueurs', ligne=ligne, colonne=colonne) }}"
+            >  </a>
+          {% endif %}
+        </td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+    </table>
+    <div class="container">
+      <a href="{{ url_for('razdeuxjoueurs') }}"class="url"> Nouvelle partie ? </a>
+   </div>
+  </body>
+</html>

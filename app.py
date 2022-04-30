@@ -37,3 +37,38 @@ def verif_gagnant(tableau):
         elif nbO == 3:
             return 'O'
     return 'Aucun'
+
+#JEU FLASK
+@app.route('/jouer/<int:ligne>/<int:colonne>')
+def jouer(ligne, colonne):
+    session['tableau'][ligne][colonne] = session['joueur_actuel'] #On complète le tableau en cours avec le choix du joueur
+
+@app.route('/deuxjoueurs/')
+def deuxjoueurs():
+    #On commence par initialiser en chargeant le tableau vide, le joueur X commence, si c'est le début de la partie
+    if 'tableau' not in session:
+        session['tableau'] = TABLEAU_VIDE
+        session['joueur_actuel'] = 'X'
+    #On actualise la vairiable gagnat qui contient Aucun, X ou O (initialisée à Aucun)
+    gagnant = verif_gagnant(session['tableau'])
+    #Affichage dans le navigateur
+    return render_template('deuxjoueurs.html', joueur=session['joueur_actuel'], jeu=session['tableau'], gagnant=gagnant)
+
+
+@app.route('/deuxjoueurs/jouerdeuxjoueurs/<int:ligne>/<int:colonne>')
+def jouerdeuxjoueurs(ligne, colonne):
+    #On change la case jouée
+    session['tableau'][ligne][colonne] = session['joueur_actuel']
+    #On chage le joueur en cours
+    if session['joueur_actuel'] == 'X':
+        session['joueur_actuel'] = 'O'
+    else: 
+        session['joueur_actuel'] = 'X'
+    return redirect(url_for('deuxjoueurs'))
+
+
+@app.route('/deuxjoueurs/raz')
+def razdeuxjoueurs():
+    session['tableau'] = TABLEAU_VIDE
+    session['joueur_actuel'] = 'X'
+    return redirect(url_for('deuxjoueurs'))
