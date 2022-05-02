@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <meta charset="UTF-8" />
+    <title>Morpion : 1 joueur</title>
+    <style>
+      table {
+        margin-left:auto;
+        margin-right:auto
+      }
+    </style>
+  </head>
+  <body>
+    <h1> Morpion - 1 joueur </h1>
+
+    <div class="container">
+       <p class="annonceur"> Vous êtes le joueur {{joueur}} </p>
+    </div>
+    {% if gagnant == "X" %}
+    <div class="container">
+       <p class="annonceur"> VICTOIRE !</p>
+    </div>
+    {% endif %}
+    {% if gagnant == "O" %}
+    <div class="container">
+       <p class="annonceur"> PERDU ! </p>
+    </div>
+    {% endif %}
+    <table>
+      {% for ligne in range(3) %}
+      <tr>
+        {% for colonne in range(3) %}
+        <td>
+          {% if jeu[ligne][colonne] %} {{ jeu[ligne][colonne] }} {% elif gagnant != 'Aucun' %} {% else
+          %}
+          <a class="gameButton" href="{{ url_for('jouerunjoueur', ligne=ligne, colonne=colonne) }}"
+            >  </a>
+          {% endif %}
+        </td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+    </table>
+
+    <div class="container">
+      <a href="{{ url_for('razunjoueur') }}"class="url"> Nouvelle partie ? </a>
+   </div>
+
+  </body>
+</html>
