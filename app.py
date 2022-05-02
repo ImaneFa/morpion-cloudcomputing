@@ -72,3 +72,31 @@ def razdeuxjoueurs():
     session['tableau'] = TABLEAU_VIDE
     session['joueur_actuel'] = 'X'
     return redirect(url_for('deuxjoueurs'))
+
+
+@app.route('/unjoueur/<int:strat>')
+def unjoueur():
+    #On commence par initialiser en chargeant le tableau vide, le joueur X commence, si c'est le début de la partie
+    if 'tableau' not in session:
+        session['tableau'] = TABLEAU_VIDE
+    #On actualise la vairiable gagnat qui contient Aucun, X ou O (initialisée à Aucun)
+    gagnant = verif_gagnant(session['tableau'])
+    #Affichage dans le navigateur
+    return render_template('unjoueur.html', joueur='X', jeu=session['tableau'], gagnant=gagnant)
+
+
+@app.route('/unjoueur/jouer/<int:ligne>/<int:colonne>')
+def jouerunjoueur(ligne, colonne):
+    #On change la case jouée
+    session['tableau'][ligne][colonne] = 'X'
+    if verif_gagnant(session['tableau']) == 'Aucun':
+        reponse = bot(session['tableau'], strat=session['strat']) #Appel d'une fonction de stratégie 
+        session['tableau'][reponse[0]][reponse[1]] = 'O'
+    return redirect(url_for('unjoueur'))
+
+
+@app.route('/unjoueur/raz')
+def razunjoueur():
+    session['tableau'] = TABLEAU_VIDE
+    session['joueur_actuel'] = 'X'
+    return redirect(url_for('unjoueur'))
