@@ -2,6 +2,8 @@
 from flask import Flask, render_template, session, redirect, url_for
 from flask_session import Session 
 from tempfile import mkdtemp
+import os
+from random import choice
 
 #tableau
 TABLEAU_VIDE = [[None,None,None], [None, None, None], [None, None, None]]
@@ -38,10 +40,26 @@ def verif_gagnant(tableau):
             return 'O'
     return 'Aucun'
 
+# STRATEGIES DES BOTS
+def bot(tableau):
+    """
+    Stratégie de réponse aléatoire parmi les cases vides
+    """
+    #Etablissement de la liste des cases vides
+    cases_vides = []
+    for i in range(3):
+        for j in range(3):
+            if tableau[i][j] is None:
+                cases_vides.append([i,j])
+    #On choisi aléatoirement une case vide
+    return choice(cases_vides)
+
+
 #JEU FLASK
 @app.route('/jouer/<int:ligne>/<int:colonne>')
 def jouer(ligne, colonne):
     session['tableau'][ligne][colonne] = session['joueur_actuel'] #On complète le tableau en cours avec le choix du joueur
+
 
 @app.route('/deuxjoueurs/')
 def deuxjoueurs():
@@ -65,7 +83,6 @@ def jouerdeuxjoueurs(ligne, colonne):
     else: 
         session['joueur_actuel'] = 'X'
     return redirect(url_for('deuxjoueurs'))
-
 
 @app.route('/deuxjoueurs/raz')
 def razdeuxjoueurs():
