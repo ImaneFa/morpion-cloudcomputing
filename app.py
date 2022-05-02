@@ -40,6 +40,15 @@ def verif_gagnant(tableau):
             return 'O'
     return 'Aucun'
 
+
+def nbcasesvides(tableau):
+    res = 0
+    for ligne in tableau:
+        for element in ligne:
+            if element is None:
+                res += 1
+    return res
+
 # STRATEGIES DES BOTS
 def bot(tableau):
     """
@@ -84,6 +93,7 @@ def jouerdeuxjoueurs(ligne, colonne):
         session['joueur_actuel'] = 'X'
     return redirect(url_for('deuxjoueurs'))
 
+
 @app.route('/deuxjoueurs/raz')
 def razdeuxjoueurs():
     session['tableau'] = TABLEAU_VIDE
@@ -106,7 +116,7 @@ def unjoueur():
 def jouerunjoueur(ligne, colonne):
     #On change la case jouée
     session['tableau'][ligne][colonne] = 'X'
-    if verif_gagnant(session['tableau']) == 'Aucun':
+    if verif_gagnant(session['tableau']) == 'Aucun' and nbcasesvides(session['tableau'])>0:
         reponse = bot(session['tableau'], strat=session['strat']) #Appel d'une fonction de stratégie 
         session['tableau'][reponse[0]][reponse[1]] = 'O'
     return redirect(url_for('unjoueur'))
