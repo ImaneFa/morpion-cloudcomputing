@@ -65,9 +65,21 @@ def bot(tableau):
 
 
 #JEU FLASK
+@app.route('/')
+def accueil():
+    return render_template('index.html')
+
+
 @app.route('/jouer/<int:ligne>/<int:colonne>')
 def jouer(ligne, colonne):
     session['tableau'][ligne][colonne] = session['joueur_actuel'] #On complète le tableau en cours avec le choix du joueur
+
+
+@app.route('/retouraccueil/')
+def retouraccueil():
+    session['tableau'] = TABLEAU_VIDE
+    session['joueur_actuel'] = 'X'
+    return redirect(url_for('accueil'))
 
 
 @app.route('/deuxjoueurs/')

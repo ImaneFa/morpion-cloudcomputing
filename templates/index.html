@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <style>
+      table {
+        margin-left:auto;
+        margin-right:auto
+      }
+
+    </style>
+    <title>Morpion - Groupe 3</title>
+</head>
+<body>
+   <h1>Projet Morpion Flask - Groupe 3</h1>
+
+   <div class="container">
+       <p> Justin AGUENIER, Matteo CUVELIER, Imane FARES</p>
+   </div>
+
+   <div class="container">
+       <a href="{{ url_for('deuxjoueurs') }}"  class="url">Jeu entre amis</a>
+   </div>
+
+   <div class="container">
+    <p class="annonceur"> Trop facile contre ton ami ? Affronte le robot </p>
+  </div>
+   <div class="container">
+       <a href="{{ url_for('unjoueur', strat=1) }}" class="url"> Niveau de difficulté 1</a>
+      <a href="{{ url_for('unjoueur', strat=2) }}" class="url"> Niveau de difficulté 2</a>
+   </div>
+
+</body>
+</html>
