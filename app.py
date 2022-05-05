@@ -50,7 +50,17 @@ def nbcasesvides(tableau):
     return res
 
 # STRATEGIES DES BOTS
-def bot(tableau):
+def bot(tableau, strat):
+    #Fonction de réponse générale à l'action du joueur en mode 1 joueur
+    if strat==1: #Réponse aléatoire
+        return bot_strategie_1(tableau)
+    elif strat==2:
+        return bot_strategie_2(tableau)
+    elif strat==3:
+        return bot_strategie_3(tableau)
+
+
+def bot_strategie_1(tableau):
     """
     Stratégie de réponse aléatoire parmi les cases vides
     """
@@ -62,6 +72,32 @@ def bot(tableau):
                 cases_vides.append([i,j])
     #On choisi aléatoirement une case vide
     return choice(cases_vides)
+
+
+def bot_strategie_2(tableau):
+    # Si on est sur le point de gagner, compléter la ligne
+    for position in combinaisons:
+        groupe = (tableau[position[0][0]][position[0][1]], 
+                    tableau[position[1][0]][position[1][1]],
+                    tableau[position[2][0]][position[2][1]])
+        if groupe.count('O') == 2 and groupe.count(None) == 1: 
+            indice_nouvellecase = groupe.index(None) 
+            return position[indice_nouvellecase]
+        
+    # Si le joueur est sur le point de gagner, le bloquer     
+    for position in combinaisons:
+        groupe = (tableau[position[0][0]][position[0][1]], 
+                    tableau[position[1][0]][position[1][1]],
+                    tableau[position[2][0]][position[2][1]])
+        if groupe.count('X') == 2 and groupe.count(None) == 1: 
+            indice_nouvellecase = groupe.index(None) 
+            return position[indice_nouvellecase]
+      
+    return bot_strategie_1(tableau)
+
+
+def bot_strategie_3(tableau):
+    return None
 
 
 #JEU FLASK
@@ -114,14 +150,16 @@ def razdeuxjoueurs():
 
 
 @app.route('/unjoueur/<int:strat>')
-def unjoueur():
+def unjoueur(strat):
     #On commence par initialiser en chargeant le tableau vide, le joueur X commence, si c'est le début de la partie
     if 'tableau' not in session:
         session['tableau'] = TABLEAU_VIDE
+    #On définit la strategie
+    session['strat'] = strat
     #On actualise la vairiable gagnat qui contient Aucun, X ou O (initialisée à Aucun)
     gagnant = verif_gagnant(session['tableau'])
     #Affichage dans le navigateur
-    return render_template('unjoueur.html', joueur='X', jeu=session['tableau'], gagnant=gagnant)
+    return render_template('unjoueur.html', joueur='X', jeu=session['tableau'], gagnant=gagnant, strat=session['strat'])
 
 
 @app.route('/unjoueur/jouer/<int:ligne>/<int:colonne>')
@@ -131,11 +169,11 @@ def jouerunjoueur(ligne, colonne):
     if verif_gagnant(session['tableau']) == 'Aucun' and nbcasesvides(session['tableau'])>0:
         reponse = bot(session['tableau'], strat=session['strat']) #Appel d'une fonction de stratégie 
         session['tableau'][reponse[0]][reponse[1]] = 'O'
-    return redirect(url_for('unjoueur'))
+    return redirect(url_for('unjoueur', strat=session['strat']))
 
 
 @app.route('/unjoueur/raz')
 def razunjoueur():
     session['tableau'] = TABLEAU_VIDE
     session['joueur_actuel'] = 'X'
-    return redirect(url_for('unjoueur'))
+    return redirect(url_for('unjoueur', strat=session['strat']))
