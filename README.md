@@ -29,3 +29,18 @@ Organisation du répertoire
 ## Technologies utilisées
 - Python
 - Flask, Session Flask
+- Docker, DockerHub
+
+## Disponibilité sur DockerHub
+
+L'image a été poussée sur DockerHub par la commande suivante : ```docker push justinaguenier/morpion-ensae-cloudcomputing```
+
+Commande pour obtenir l'image : ```docker push justinaguenier/morpion-ensae-cloudcomputing```
+
+- ```docker pull justinaguenier/morpion_ensae_cloudcomputing ```
+
+Commande pour faire tourner l'image 
+
+- ```docker run justinaguenier/morpion_ensae_cloudcomputing```
+
+Une fois la commande effectuée, l'application doit tourner en local sur le port ```5000```

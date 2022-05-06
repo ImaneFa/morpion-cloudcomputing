@@ -159,3 +159,9 @@ def razunjoueur():
     session['tableau'] = TABLEAU_VIDE
     session['joueur_actuel'] = 'X'
     return redirect(url_for('unjoueur', strat=session['strat']))
+
+
+if __name__ == "__main__":
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host="0.0.0.0", port=port, debug=True)
+
