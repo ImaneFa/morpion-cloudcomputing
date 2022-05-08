@@ -51,13 +51,13 @@ Le jeu pourra se faire à deux joueurs (qui joueront successivement) ou avec un 
 
 L'image a été poussée sur DockerHub par la commande suivante : ```docker push justinaguenier/morpion-ensae-cloudcomputing```
 
-Commande pour obtenir l'image : ```docker push justinaguenier/morpion-ensae-cloudcomputing```
+Afin de rendre l'image disponible, nous avons utilisé la commande suivante : ```docker push justinaguenier/morpion-ensae-cloudcomputing```
 
-- ```docker pull justinaguenier/morpion_ensae_cloudcomputing ```
+- ```docker pull justinaguenier/morpion-ensae-cloudcomputing ```
 
 Commande pour faire tourner l'image 
 
-- ```docker run justinaguenier/morpion_ensae_cloudcomputing```
+- ```docker run -p 5000:5000 justinaguenier/morpion-ensae-cloudcomputing```
 
 Une fois la commande effectuée, l'application doit tourner en local sur le port ```5000```
 
