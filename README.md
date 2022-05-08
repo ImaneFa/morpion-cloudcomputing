@@ -24,12 +24,28 @@ Le jeu pourra se faire à deux joueurs (qui joueront successivement) ou avec un 
     - Si aucune des précédentes stratégies n’a pu être appliquée, alors l’ordinateur se place sur l’une des cases vides restantes en priorisant les coins, puis le centre puis une case aléatoire.
 
 ## Organisation
-Organisation du répertoire
+```bash
+├── Dockerfile
+├── Readme.md
+├── app.py : fichier qui génère l'application Flask
+├── basic_functions.py : fichier contenant les différentes fonctions nécéssaires au bon déroulement du jeu de morpion
+├── requirements.txt : fichier qui déclare les dépendances nécéssaires pour créer l'image Docker
+├── static : contient le code CSS utilsé pour styliser la page
+│   ├── css
+│   │   └── main.css
+│   ├── favicon.ico
+│   └── favicon_io.zip
+├── templates : contient les différentes pages web
+│   ├── deuxjoueurs.html : page dédiée au jeu entre amis
+│   ├── index.html : page d'accueil
+│   └── unjoueur.html : page pour jouer contre différent algorithmes
+```
 
 ## Technologies utilisées
 - Python
 - Flask, Session Flask
 - Docker, DockerHub
+- Heroku
 
 ## Disponibilité sur DockerHub
 
@@ -44,3 +60,22 @@ Commande pour faire tourner l'image
 - ```docker run justinaguenier/morpion_ensae_cloudcomputing```
 
 Une fois la commande effectuée, l'application doit tourner en local sur le port ```5000```
+
+Nous avons également deployé notre application sur le web à l'aide d'Heroku. L'application est disponible via l'url suivant https://morpion-ensae-cloudcomputing.herokuapp.com/
+
+
+## Déploiement Heroku : 
+
+Voici les différentes étapes mises en oeuvre pour mettre en oeuvre le déploiement sur Heroku : 
+
+- Installation du Heroku CLI à l'aide de Brew sur MacOS. 
+- Création de l'application sur le site d'Heroku que l'on nomme ```morpion-ensae```
+- Depuis la ligne de commande, on se rend dans le projet à l'aide de la commande ```d``` : 
+- ```heroku login``` 
+- ```heroku container:login``` 
+- ```heroku create```
+- ```heroku container:push web -a morpion-ensae-cloudcomputing```
+- ```heroku container:release web -a morpion-ensae-cloudcomputing```
+- ```heroku open -a morpion-ensae-cloudcomputing```
+
+La webapp est disponible ici : https://morpion-ensae-cloudcomputing.herokuapp.com/
